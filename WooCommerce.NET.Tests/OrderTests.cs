@@ -25,16 +25,17 @@ namespace WooCommerce.NET.Tests
         {
             //Place an order to try update
             Order order = await PlaceDummyOrder();
-            
+
             Assert.IsTrue(await _wooCommerce.Orders.Update(new Order()
             {
                 id = order.id,
-                status = "completed"
+                set_paid = true,
+                status = "bol"
             }));
             
             // Try fetching the order
             Order o = await _wooCommerce.Orders.Fetch(order.id);
-            Assert.AreEqual(o.status, "completed");
+            Assert.AreEqual(o.status, "bol");
             
             // Try delete an order
             await _wooCommerce.Orders.Delete(order.id, true);
@@ -83,9 +84,9 @@ namespace WooCommerce.NET.Tests
         {
             return await _wooCommerce.Orders.Create(new Order()
             {
+                status = "processing",
                 payment_method = "Bol.com",
                 payment_method_title = "Bol.com koppeling",
-                set_paid = true,
                 billing = new CustomerInfo()
                 {
                     first_name = "Pawel",

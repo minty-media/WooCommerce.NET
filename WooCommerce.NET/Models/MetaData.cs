@@ -11,6 +11,6 @@ namespace WooCommerce.NET
         public string key { get; set; }
         
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public string value { get; set; }
+        public object value { get; set; }
     }
 }

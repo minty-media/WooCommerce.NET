@@ -23,7 +23,7 @@ namespace WooCommerce.NET
         public HttpClient PrepareHttpClient()
         {
             HttpClient client = new HttpClient();
-            
+
             if (!string.IsNullOrEmpty(userAgent))
                 client.DefaultRequestHeaders.Add("User-Agent", userAgent);
 
