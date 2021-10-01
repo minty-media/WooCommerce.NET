@@ -76,7 +76,6 @@ namespace WooCommerce.NET
                 
                 Console.WriteLine($"Failed fetching all orders from WooCommerce:\n - Status code: {response.StatusCode}\n - Reason: {response.ReasonPhrase}\n - Response text: {await response.Content.ReadAsStringAsync()}");
             }
-
             return null;
         }
         
@@ -125,10 +124,16 @@ namespace WooCommerce.NET
 
             using (var response = await client.SendAsync(request))
             {
+                Console.Write($"Create order: {response.StatusCode} ");
+
                 if (response.IsSuccessStatusCode)
-                    return JsonSerializer.Deserialize<Order>(await response.Content.ReadAsStringAsync());
+                {
+                    Order o = JsonSerializer.Deserialize<Order>(await response.Content.ReadAsStringAsync());
+                    Console.WriteLine($"{o.id}");
+                    return o;
+                }
                 
-                Console.WriteLine($"Failed creating order on WooCommerce:\n - Status code: {response.StatusCode}\n - Reason: {response.ReasonPhrase}\n - Response text: {await response.Content.ReadAsStringAsync()}");
+                Console.WriteLine($"\nFailed creating order on WooCommerce:\n - Status code: {response.StatusCode}\n - Reason: {response.ReasonPhrase}\n - Response text: {await response.Content.ReadAsStringAsync()}");
                 Console.WriteLine(" - Input towards WooCommerce: " + JsonSerializer.Serialize(order, new JsonSerializerOptions(){ WriteIndented = true }));
             }
             return null;
