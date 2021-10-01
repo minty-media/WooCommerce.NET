@@ -12,8 +12,7 @@ namespace WooCommerce.NET.Tests
         [SetUp]
         public void Setup()
         {
-            _wooCommerce = new WooCommerce("https://mintybol-api.myio.nl",
-                "ck_ebf92e16e4e44edd6b6bbaa17f91da9900bb6a5b", "cs_1eab44a4c963690e870765b998cb625e99b026bb");
+            _wooCommerce = new WooCommerce("", "", "");
         }
 
         [Test]
@@ -31,6 +30,9 @@ namespace WooCommerce.NET.Tests
             // Try fetching the order
             Order o = await _wooCommerce.Orders.Fetch(order.id);
             Assert.AreEqual(o.status, "completed");
+            
+            // Try delete an order
+            await _wooCommerce.Orders.Delete(order.id, true);
         }
 
         [Test]
@@ -69,7 +71,6 @@ namespace WooCommerce.NET.Tests
             
             // Try delete an order
             bool success = await _wooCommerce.Orders.Delete(order.id, true);
-            
             Assert.IsTrue(success);
         }
 
