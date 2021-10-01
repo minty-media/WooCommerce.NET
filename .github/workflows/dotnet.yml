@@ -27,3 +27,7 @@ jobs:
           
       - name: Test
         run: dotnet test --no-restore --verbosity normal
+        env:
+          WOO_HOST: ${{ secrets.WOO_HOST }}
+          WOO_KEY: ${{ secrets.WOO_KEY }}
+          WOO_SECRET: ${{ secrets.WOO_SECRET }}
