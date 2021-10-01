@@ -1,35 +1,40 @@
-using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace WooCommerce.NET
 {
-    public class TaxLine
+    public class CustomerInfo
     {
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public long id { get; set; }
+        public string first_name { get; set; }
         
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public string rate_code { get; set; }
+        public string last_name { get; set; }
         
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public long rate_id { get; set; }
+        public string company { get; set; }
         
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public string label { get; set; }
+        public string address_1 { get; set; }
         
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public bool compound { get; set; }
+        public string address_2 { get; set; }
         
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public string tax_total { get; set; }
+        public string city { get; set; }
         
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public string shipping_tax_total { get; set; }
+        public string state { get; set; }
         
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public long rate_percent { get; set; }
+        public string postcode { get; set; }
         
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public List<MetaData> meta_data { get; set; }
+        public string country { get; set; }
+        
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+        public string email { get; set; }
+        
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+        public string phone { get; set; }
     }
 }

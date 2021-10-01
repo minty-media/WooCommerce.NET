@@ -1,9 +1,16 @@
+using System.Text.Json.Serialization;
+
 namespace WooCommerce.NET
 {
     public class MetaData
     {
-        public int id { get; set; }
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+        public long id { get; set; }
+        
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public string key { get; set; }
+        
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public string value { get; set; }
     }
 }

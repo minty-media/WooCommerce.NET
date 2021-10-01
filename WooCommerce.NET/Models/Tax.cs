@@ -1,9 +1,16 @@
+using System.Text.Json.Serialization;
+
 namespace WooCommerce.NET
 {
     public class Tax
     {
-        public int id { get; set; }
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+        public long id { get; set; }
+        
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public string total { get; set; }
+        
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public string subtotal { get; set; }
     }
 }
