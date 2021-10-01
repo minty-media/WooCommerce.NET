@@ -37,8 +37,9 @@ namespace WooCommerce.NET.Tests
             Order o = await _wooCommerce.Orders.Fetch(order.id);
             Assert.AreEqual(o.status, "bol");
             
-            // Try delete an order
-            await _wooCommerce.Orders.Delete(order.id, true);
+            // Clean up our shit and delete the used order
+            bool success = await _wooCommerce.Orders.Delete(order.id, true);
+            Assert.IsTrue(success);
         }
 
         [Test]
@@ -51,7 +52,14 @@ namespace WooCommerce.NET.Tests
         [Test]
         public async Task FetchAllOrders()
         {
-            Assert.IsNotEmpty(await _wooCommerce.Orders.FetchAll());
+            List<Order> orders = new List<Order>();
+            for (int i = 0; i <= 5; i++)
+                orders.Add(await PlaceDummyOrder());
+            
+            Assert.IsTrue((await _wooCommerce.Orders.MultiFetch()).Count >= 5);
+
+            foreach (Order o in orders)
+                Assert.IsTrue(await _wooCommerce.Orders.Delete(o.id, true));
         }
         
         [Test]
@@ -63,8 +71,9 @@ namespace WooCommerce.NET.Tests
             // Try fetching the order
             Order o = await _wooCommerce.Orders.Fetch(order.id);
             
-            // Clean things up
-            await _wooCommerce.Orders.Delete(o.id, true);
+            // Clean up our shit and delete the used order
+            bool success = await _wooCommerce.Orders.Delete(order.id, true);
+            Assert.IsTrue(success);
             
             Assert.IsNotNull(o);
         }
@@ -79,33 +88,43 @@ namespace WooCommerce.NET.Tests
             bool success = await _wooCommerce.Orders.Delete(order.id, true);
             Assert.IsTrue(success);
         }
+        
+        [Test]
+        public async Task SearchOrderWithMetaData()
+        {
+            //Place an order to try fetch
+            Order order = await PlaceDummyOrder();
+            Assert.IsNotEmpty(await _wooCommerce.Orders.MetaSearch("_bol_orderId", "4234546"));
+            
+            // Clean up our shit and delete the used order
+            bool success = await _wooCommerce.Orders.Delete(order.id, true);
+            Assert.IsTrue(success);
+        }
 
         private async Task<Order> PlaceDummyOrder()
         {
             return await _wooCommerce.Orders.Create(new Order()
             {
                 status = "processing",
-                payment_method = "Bol.com",
-                payment_method_title = "Bol.com koppeling",
                 billing = new CustomerInfo()
                 {
-                    first_name = "Pawel",
-                    last_name = "TEST",
-                    address_1 = "Mollerusweg 82",
-                    city = "Haarlem",
-                    postcode = "2020 AB",
-                    country = "NL",
-                    company = "Minty Media"
+                    first_name = "John",
+                    last_name = "Dapper",
+                    address_1 = "Dappstreet 69",
+                    city = "Dogetown",
+                    postcode = "42069",
+                    country = "US",
+                    company = "Doge Corp."
                 },
                 shipping = new CustomerInfo()
                 {
-                    first_name = "Pawel",
-                    last_name = "TEST",
-                    address_1 = "Mollerusweg 82",
-                    city = "Haarlem",
-                    postcode = "2020 AB",
-                    country = "NL",
-                    company = "Minty Media"
+                    first_name = "John",
+                    last_name = "Dapper",
+                    address_1 = "Dappstreet 69",
+                    city = "Dogetown",
+                    postcode = "42069",
+                    country = "US",
+                    company = "Doge Corp."
                 },
                 line_items = new List<LineItem>()
                 {
@@ -124,8 +143,8 @@ namespace WooCommerce.NET.Tests
                 {
                     new ()
                     {
-                        key = "_btw",
-                        value = "dsfghjk"
+                        key = "_bol_orderId",
+                        value = "4234546"
                     }
                 }
             });
