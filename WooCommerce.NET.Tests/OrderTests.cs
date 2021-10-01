@@ -16,6 +16,8 @@ namespace WooCommerce.NET.Tests
             _wooCommerce = new WooCommerce(Environment.GetEnvironmentVariable("WOO_HOST"), 
                 Environment.GetEnvironmentVariable("WOO_KEY"), 
                 Environment.GetEnvironmentVariable("WOO_SECRET"));
+
+            _wooCommerce.userAgent = "WooCommerce.NET/1.0.0 (linux; ubuntu20.04)";
         }
 
         [Test]
