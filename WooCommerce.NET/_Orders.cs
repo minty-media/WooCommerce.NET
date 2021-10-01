@@ -16,31 +16,35 @@ namespace WooCommerce.NET
             this._wooCommerce = _wooCommerce;
         }
 
-        public async Task<Order> Create(Order order)
+        public async Task<Order> Create(Order order, bool dumpJson = false)
         {
             var client = new HttpClient();
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Post,
-                RequestUri = new Uri($"{_wooCommerce.host}/orders?consumer_key={_wooCommerce.key}&consumer_secret={_wooCommerce.secret}"),
+                RequestUri = new Uri($"{_wooCommerce.host}/wp-json/wc/v3/orders?consumer_key={_wooCommerce.key}&consumer_secret={_wooCommerce.secret}"),
                 Content = new StringContent(JsonSerializer.Serialize(order, new JsonSerializerOptions(){ WriteIndented = false }))
                 {
                     Headers =
                     {
                         ContentType = new MediaTypeHeaderValue("application/json")
                     }
-                },
+                }
             };
-            request.Headers.UserAgent.Add(new ProductInfoHeaderValue(_wooCommerce.userAgent));
+            
+            if (dumpJson)
+                Console.WriteLine(JsonSerializer.Serialize(order, new JsonSerializerOptions(){ WriteIndented = true }));
+            
+            if (!string.IsNullOrEmpty(_wooCommerce.userAgent))
+                request.Headers.UserAgent.Add(new ProductInfoHeaderValue(_wooCommerce.userAgent));
             
             using (var response = await client.SendAsync(request))
             {
                 if (response.IsSuccessStatusCode)
                     return JsonSerializer.Deserialize<Order>(await response.Content.ReadAsStringAsync());
                 
-                else
-                    Debug.WriteLine($"Failed creating order on WooCommerce:\n - Status code: {response.StatusCode}\n - Reason: {response.ReasonPhrase}\n\n{await response.Content.ReadAsStringAsync()}");
-                
+                Console.WriteLine($"Failed creating order on WooCommerce:\n - Status code: {response.StatusCode}\n - Reason: {response.ReasonPhrase}\n - Response text: {await response.Content.ReadAsStringAsync()}");
+                Console.WriteLine(" - Input towards WooCommerce: " + JsonSerializer.Serialize(order, new JsonSerializerOptions(){ WriteIndented = true }));
             }
             return null;
         }
