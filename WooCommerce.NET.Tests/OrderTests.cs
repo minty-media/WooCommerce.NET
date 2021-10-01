@@ -17,6 +17,23 @@ namespace WooCommerce.NET.Tests
         }
 
         [Test]
+        public async Task UpdateOrder()
+        {
+            //Place an order to try update
+            Order order = await PlaceDummyOrder();
+            
+            Assert.IsTrue(await _wooCommerce.Orders.Update(new Order()
+            {
+                id = order.id,
+                status = "completed"
+            }));
+            
+            // Try fetching the order
+            Order o = await _wooCommerce.Orders.Fetch(order.id);
+            Assert.AreEqual(o.status, "completed");
+        }
+
+        [Test]
         public async Task CreateOrder()
         {
             Order order = await PlaceDummyOrder();
@@ -63,7 +80,6 @@ namespace WooCommerce.NET.Tests
                 payment_method = "Bol.com",
                 payment_method_title = "Bol.com koppeling",
                 set_paid = true,
-                status = "completed",
                 billing = new CustomerInfo()
                 {
                     first_name = "Pawel",

@@ -18,6 +18,26 @@ namespace WooCommerce.NET
             this._wooCommerce = _wooCommerce;
         }
 
+        public async Task<bool> Update(Order order)
+        {
+            var client = new HttpClient();
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Put,
+                RequestUri = new Uri($"{_wooCommerce.host}/wp-json/wc/v3/orders/{order.id}?consumer_key={_wooCommerce.key}&consumer_secret={_wooCommerce.secret}"),
+                Content = new StringContent(JsonSerializer.Serialize(order, new JsonSerializerOptions(){ WriteIndented = false }))
+                {
+                    Headers =
+                    {
+                        ContentType = new MediaTypeHeaderValue("application/json")
+                    }
+                }
+            };
+            
+            using var response = await client.SendAsync(request);
+            return response.IsSuccessStatusCode;
+        }
+
         public async Task<bool> Delete(long orderId, bool forceDelete = false)
         {
             var client = new HttpClient();
