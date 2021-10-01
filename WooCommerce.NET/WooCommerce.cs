@@ -10,9 +10,9 @@ namespace WooCommerce.NET
 
         public WooCommerce(string host, string key, string secret)
         {
-            this.host = host;
             this.key = key;
             this.secret = secret;
+            this.host = host.EndsWith("/wp-json/wc/v3") ? host.Replace("/wp-json/wc/v3", "") : host;
 
             Orders = new _Orders(this);
         }
