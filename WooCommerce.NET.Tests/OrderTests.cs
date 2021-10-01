@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,7 +13,9 @@ namespace WooCommerce.NET.Tests
         [SetUp]
         public void Setup()
         {
-            _wooCommerce = new WooCommerce("", "", "");
+            _wooCommerce = new WooCommerce(Environment.GetEnvironmentVariable("WOO_HOST"), 
+                Environment.GetEnvironmentVariable("WOO_KEY"), 
+                Environment.GetEnvironmentVariable("WOO_SECRET"));
         }
 
         [Test]

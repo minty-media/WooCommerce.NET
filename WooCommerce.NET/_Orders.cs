@@ -20,7 +20,7 @@ namespace WooCommerce.NET
 
         public async Task<bool> Update(Order order)
         {
-            var client = new HttpClient();
+            HttpClient client = _wooCommerce.PrepareHttpClient();
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Put,
@@ -40,7 +40,7 @@ namespace WooCommerce.NET
 
         public async Task<bool> Delete(long orderId, bool forceDelete = false)
         {
-            var client = new HttpClient();
+            HttpClient client = _wooCommerce.PrepareHttpClient();
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Delete,
@@ -58,7 +58,7 @@ namespace WooCommerce.NET
             if (optionalParameters != null)
                 optionalParams = string.Join("&", optionalParameters.Select(x => x.Key + "=" + x.Value).ToArray());
 
-            var client = new HttpClient();
+            HttpClient client = _wooCommerce.PrepareHttpClient();
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
@@ -82,7 +82,7 @@ namespace WooCommerce.NET
         
         public async Task<Order> Fetch(long orderId)
         {
-            var client = new HttpClient();
+            HttpClient client = _wooCommerce.PrepareHttpClient();
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
@@ -106,7 +106,7 @@ namespace WooCommerce.NET
 
         public async Task<Order> Create(Order order, bool dumpJson = false)
         {
-            var client = new HttpClient();
+            HttpClient client = _wooCommerce.PrepareHttpClient();
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Post,
@@ -122,10 +122,7 @@ namespace WooCommerce.NET
             
             if (dumpJson)
                 Console.WriteLine(JsonSerializer.Serialize(order, new JsonSerializerOptions(){ WriteIndented = true }));
-            
-            if (!string.IsNullOrEmpty(_wooCommerce.userAgent))
-                request.Headers.UserAgent.Add(new ProductInfoHeaderValue(_wooCommerce.userAgent));
-            
+
             using (var response = await client.SendAsync(request))
             {
                 if (response.IsSuccessStatusCode)

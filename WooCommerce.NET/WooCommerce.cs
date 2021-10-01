@@ -1,3 +1,5 @@
+using System.Net.Http;
+
 namespace WooCommerce.NET
 {
     public class WooCommerce
@@ -15,8 +17,20 @@ namespace WooCommerce.NET
             this.host = host.EndsWith("/wp-json/wc/v3") ? host.Replace("/wp-json/wc/v3", "") : host;
 
             Orders = new _Orders(this);
+            Products = new _Products(this);
         }
 
+        public HttpClient PrepareHttpClient()
+        {
+            HttpClient client = new HttpClient();
+            
+            if (!string.IsNullOrEmpty(userAgent))
+                client.DefaultRequestHeaders.Add("User-Agent", userAgent);
+
+            return client;
+        }
+        
         public _Orders Orders;
+        public _Products Products;
     }
 }
