@@ -18,6 +18,7 @@ namespace WooCommerce.NET
 
             Orders = new _Orders(this);
             Products = new _Products(this);
+            Customers = new _Customers(this);
         }
 
         public HttpClient PrepareHttpClient()
@@ -32,5 +33,6 @@ namespace WooCommerce.NET
         
         public _Orders Orders;
         public _Products Products;
+        public _Customers Customers;
     }
 }

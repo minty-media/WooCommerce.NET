@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace WooCommerce.NET
+namespace WooCommerce.NET.Models
 {
     public class Order
     {
@@ -58,10 +58,10 @@ namespace WooCommerce.NET
         public string order_key { get; set; }
         
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public CustomerInfo billing { get; set; }
+        public BillingShippingInfo billing { get; set; }
         
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public CustomerInfo shipping { get; set; }
+        public BillingShippingInfo shipping { get; set; }
         
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public string payment_method { get; set; }

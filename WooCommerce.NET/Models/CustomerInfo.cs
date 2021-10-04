@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace WooCommerce.NET
 {
-    public class CustomerInfo
+    public class BillingShippingInfo
     {
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public string first_name { get; set; }

@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using WooCommerce.NET.Models;
 
 namespace WooCommerce.NET.Tests
 {
-    public class Tests
+    public class OrderTests
     {
         private WooCommerce _wooCommerce;
         
@@ -106,7 +107,7 @@ namespace WooCommerce.NET.Tests
             return await _wooCommerce.Orders.Create(new Order()
             {
                 status = "processing",
-                billing = new CustomerInfo()
+                billing = new BillingShippingInfo()
                 {
                     first_name = "John",
                     last_name = "Dapper",
@@ -116,7 +117,7 @@ namespace WooCommerce.NET.Tests
                     country = "US",
                     company = "Doge Corp."
                 },
-                shipping = new CustomerInfo()
+                shipping = new BillingShippingInfo()
                 {
                     first_name = "John",
                     last_name = "Dapper",
