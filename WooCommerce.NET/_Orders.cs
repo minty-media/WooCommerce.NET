@@ -220,7 +220,7 @@ namespace WooCommerce.NET
                     order: SortDirection.Descending,
                     orderStatus: OrderStatus.Any
                 ));
-            return orders?.Where(x => x.meta_data.Any(x => x.key == metaKey && x.value.ToString() == metaValue)).ToList();
+            return orders.Count > 0 ? orders?.Where(x => x.meta_data.Any(y => y.key == metaKey && y.value.ToString() == metaValue)).ToList() : orders;
         }
     }
 }
