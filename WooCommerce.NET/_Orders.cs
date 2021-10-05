@@ -9,7 +9,7 @@ using WooCommerce.NET.Models;
 
 namespace WooCommerce.NET
 {
-    public class _Orders
+    public class _Orders : WooCommerceSection
     {
         private WooCommerce _wooCommerce { get; set; }
 
@@ -30,7 +30,7 @@ namespace WooCommerce.NET
             {
                 Method = HttpMethod.Put,
                 RequestUri = new Uri($"{_wooCommerce.host}/wp-json/wc/v3/orders/{order.id}?consumer_key={_wooCommerce.key}&consumer_secret={_wooCommerce.secret}"),
-                Content = new StringContent(JsonSerializer.Serialize(order, new JsonSerializerOptions(){ WriteIndented = false }))
+                Content = new StringContent(JsonSerializer.Serialize(order, this.GetJsonSerializerOptions()))
                 {
                     Headers =
                     {
@@ -125,7 +125,7 @@ namespace WooCommerce.NET
                 if (response.IsSuccessStatusCode)
                 {
                     List<Order> orders =
-                        JsonSerializer.Deserialize<List<Order>>(await response.Content.ReadAsStringAsync());
+                        JsonSerializer.Deserialize<List<Order>>(await response.Content.ReadAsStringAsync(), this.GetJsonSerializerOptions());
 
                     return orders ?? new List<Order>();
                 }
@@ -156,7 +156,7 @@ namespace WooCommerce.NET
             using (var response = await client.SendAsync(request))
             {
                 if (response.IsSuccessStatusCode)
-                    return JsonSerializer.Deserialize<Order>(await response.Content.ReadAsStringAsync());
+                    return JsonSerializer.Deserialize<Order>(await response.Content.ReadAsStringAsync(), this.GetJsonSerializerOptions());
                 
                 Console.WriteLine($"Failed fetching an order from WooCommerce:\n - Status code: {response.StatusCode}\n - Reason: {response.ReasonPhrase}\n - Response text: {await response.Content.ReadAsStringAsync()}");
             }
@@ -176,7 +176,7 @@ namespace WooCommerce.NET
             {
                 Method = HttpMethod.Post,
                 RequestUri = new Uri($"{_wooCommerce.host}/wp-json/wc/v3/orders?consumer_key={_wooCommerce.key}&consumer_secret={_wooCommerce.secret}"),
-                Content = new StringContent(JsonSerializer.Serialize(order, new JsonSerializerOptions(){ WriteIndented = false }))
+                Content = new StringContent(JsonSerializer.Serialize(order, this.GetJsonSerializerOptions()))
                 {
                     Headers =
                     {
@@ -191,13 +191,13 @@ namespace WooCommerce.NET
 
                 if (response.IsSuccessStatusCode)
                 {
-                    Order o = JsonSerializer.Deserialize<Order>(await response.Content.ReadAsStringAsync());
+                    Order o = JsonSerializer.Deserialize<Order>(await response.Content.ReadAsStringAsync(), this.GetJsonSerializerOptions());
                     Console.WriteLine($"{o.id}");
                     return o;
                 }
                 
                 Console.WriteLine($"\nFailed creating order on WooCommerce:\n - Status code: {response.StatusCode}\n - Reason: {response.ReasonPhrase}\n - Response text: {await response.Content.ReadAsStringAsync()}");
-                Console.WriteLine(" - Input towards WooCommerce: " + JsonSerializer.Serialize(order, new JsonSerializerOptions(){ WriteIndented = true }));
+                Console.WriteLine(" - Input towards WooCommerce: " + JsonSerializer.Serialize(order, this.GetJsonSerializerOptions()));
             }
             return null;
         }

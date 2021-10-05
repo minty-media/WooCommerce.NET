@@ -132,12 +132,14 @@ namespace WooCommerce.NET.Tests
                     new()
                     {
                         product_id = 25,
-                        quantity = 4
+                        quantity = 4,
+                        price = 15
                     },
                     new()
                     {
                         product_id = 18,
-                        quantity = 2
+                        quantity = 2,
+                        price = 55
                     }
                 },
                 meta_data = new List<MetaData>()

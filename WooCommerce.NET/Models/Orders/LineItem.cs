@@ -23,17 +23,16 @@ namespace WooCommerce.NET
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public string tax_class { get; set; }
         
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault), JsonNumberHandling(JsonNumberHandling.AllowReadingFromString | JsonNumberHandling.WriteAsString)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public decimal subtotal { get; set; }
-        
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault), JsonNumberHandling(JsonNumberHandling.AllowReadingFromString | JsonNumberHandling.WriteAsString)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public decimal subtotal_tax { get; set; }
-        
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault), JsonNumberHandling(JsonNumberHandling.AllowReadingFromString | JsonNumberHandling.WriteAsString)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public decimal total { get; set; }
-        
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault), JsonNumberHandling(JsonNumberHandling.AllowReadingFromString | JsonNumberHandling.WriteAsString)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public decimal total_tax { get; set; }
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+        public decimal price { get; set; }
         
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public List<Tax> taxes { get; set; }
@@ -42,9 +41,6 @@ namespace WooCommerce.NET
         public List<MetaData> meta_data { get; set; }
         
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public object sku { get; set; }
-        
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault), JsonNumberHandling(JsonNumberHandling.AllowReadingFromString | JsonNumberHandling.WriteAsString)]
-        public decimal price { get; set; }
+        public string sku { get; set; }
     }
 }

@@ -9,7 +9,7 @@ using WooCommerce.NET.Models;
 
 namespace WooCommerce.NET
 {
-    public class _Customers
+    public class _Customers : WooCommerceSection
     {
         private WooCommerce _wooCommerce { get; set; }
 
@@ -39,7 +39,7 @@ namespace WooCommerce.NET
             using (var response = await client.SendAsync(request))
             {
                 if (response.IsSuccessStatusCode)
-                    return JsonSerializer.Deserialize<Customer>(await response.Content.ReadAsStringAsync());
+                    return JsonSerializer.Deserialize<Customer>(await response.Content.ReadAsStringAsync(), this.GetJsonSerializerOptions());
                 
                 Console.WriteLine($"Failed fetching a customer from WooCommerce:\n - Status code: {response.StatusCode}\n - Reason: {response.ReasonPhrase}\n - Response text: {await response.Content.ReadAsStringAsync()}");
             }
@@ -135,10 +135,10 @@ namespace WooCommerce.NET
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    List<Customer> orders =
-                        JsonSerializer.Deserialize<List<Customer>>(await response.Content.ReadAsStringAsync());
+                    List<Customer> customers =
+                        JsonSerializer.Deserialize<List<Customer>>(await response.Content.ReadAsStringAsync(), this.GetJsonSerializerOptions());
 
-                    return orders ?? new List<Customer>();
+                    return customers ?? new List<Customer>();
                 }
                 
                 Console.WriteLine($"Failed fetching all customers from WooCommerce:\n - Status code: {response.StatusCode}\n - Reason: {response.ReasonPhrase}\n - Response text: {await response.Content.ReadAsStringAsync()}");
@@ -149,16 +149,16 @@ namespace WooCommerce.NET
         /// <summary>
         /// Delete a customer from WooCommerce
         /// </summary>
-        /// <param name="orderId">The customer id to delete</param>
+        /// <param name="customerId">The customer id to delete</param>
         /// <param name="reassign">User ID to reassign posts to</param>
         /// <returns>Success true/false</returns>
-        public async Task<bool> Delete(long orderId, long reassign = 0)
+        public async Task<bool> Delete(long customerId, long reassign = 0)
         {
             HttpClient client = _wooCommerce.PrepareHttpClient();
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Delete,
-                RequestUri = new Uri($"{_wooCommerce.host}/wp-json/wc/v3/customers/{orderId}?consumer_key={_wooCommerce.key}&consumer_secret={_wooCommerce.secret}&force=true" + (reassign != 0 ? $"&reassign={reassign}" : "")), 
+                RequestUri = new Uri($"{_wooCommerce.host}/wp-json/wc/v3/customers/{customerId}?consumer_key={_wooCommerce.key}&consumer_secret={_wooCommerce.secret}&force=true" + (reassign != 0 ? $"&reassign={reassign}" : "")), 
             };
             
             using var response = await client.SendAsync(request);
@@ -192,13 +192,13 @@ namespace WooCommerce.NET
 
                 if (response.IsSuccessStatusCode)
                 {
-                    Customer c = JsonSerializer.Deserialize<Customer>(await response.Content.ReadAsStringAsync());
+                    Customer c = JsonSerializer.Deserialize<Customer>(await response.Content.ReadAsStringAsync(), this.GetJsonSerializerOptions());
                     Console.WriteLine($"{c.id}");
                     return c;
                 }
                 
                 Console.WriteLine($"\nFailed creating customer on WooCommerce:\n - Status code: {response.StatusCode}\n - Reason: {response.ReasonPhrase}\n - Response text: {await response.Content.ReadAsStringAsync()}");
-                Console.WriteLine(" - Input towards WooCommerce: " + JsonSerializer.Serialize(customer, new JsonSerializerOptions(){ WriteIndented = true }));
+                Console.WriteLine(" - Input towards WooCommerce: " + JsonSerializer.Serialize(customer, this.GetJsonSerializerOptions()));
             }
             return null;
         }

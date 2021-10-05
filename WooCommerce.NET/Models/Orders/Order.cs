@@ -25,31 +25,25 @@ namespace WooCommerce.NET.Models
         public bool prices_include_tax { get; set; }
         
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public string date_created { get; set; }
+        public DateTime date_created { get; set; }
         
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public string date_modified { get; set; }
+        public DateTime date_modified { get; set; }
         
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public string discount_total { get; set; }
-        
+        public decimal discount_total { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public string discount_tax { get; set; }
-        
+        public decimal discount_tax { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public string shipping_total { get; set; }
-        
+        public decimal shipping_total { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public string shipping_tax { get; set; }
-        
+        public decimal shipping_tax { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public string cart_tax { get; set; }
-        
+        public decimal cart_tax { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public string total { get; set; }
-        
+        public decimal total { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public string total_tax { get; set; }
+        public decimal total_tax { get; set; }
         
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public long customer_id { get; set; }
@@ -85,10 +79,10 @@ namespace WooCommerce.NET.Models
         public string customer_note { get; set; }
         
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public string date_completed { get; set; }
+        public DateTime date_completed { get; set; }
         
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public string date_paid { get; set; }
+        public DateTime date_paid { get; set; }
         
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public string cart_hash { get; set; }
@@ -116,19 +110,7 @@ namespace WooCommerce.NET.Models
         
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public List<object> refunds { get; set; }
-        
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public string date_created_gmt { get; set; }
-        
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public string date_modified_gmt { get; set; }
-        
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public string date_completed_gmt { get; set; }
-        
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public string date_paid_gmt { get; set; }
-        
+
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public string currency_symbol { get; set; }
         
