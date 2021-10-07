@@ -213,13 +213,18 @@ namespace WooCommerce.NET
         {
             List<Order> orders = new List<Order>();
             for (int i = 0; i < pages; i++)
-                orders.AddRange(await MultiFetch(
+            {
+                List<Order> os = await MultiFetch(
                     perPage: 100,
-                    page: i+1,              
+                    page: i + 1,
                     orderBy: OrderOrderBy.Date,
                     order: SortDirection.Descending,
                     orderStatus: OrderStatus.Any
-                ));
+                );
+                
+                if (os !=null)
+                    orders.AddRange(os);
+            }
             return orders.Count > 0 ? orders?.Where(x => x.meta_data.Any(y => y.key == metaKey && y.value.ToString() == metaValue)).ToList() : orders;
         }
     }
