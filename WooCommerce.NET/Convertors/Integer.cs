@@ -5,15 +5,15 @@ using System.Text.Json.Serialization;
 
 namespace WooCommerce.NET.Convertors
 {
-    public class IntegerJsonConvertor : JsonConverter<Int32>
+    public class IntegerJsonConvertor : JsonConverter<int?>
     {
-        public override Int32 Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        public override int? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            bool s = reader.TryGetInt32(out Int32 value);
+            bool s = reader.TryGetInt32(out int value);
             return s ? value : 0;
         }
         
-        public override void Write(Utf8JsonWriter writer, Int32 value, JsonSerializerOptions options) =>
-            writer.WriteStringValue(value.ToString(CultureInfo.InvariantCulture));
+        public override void Write(Utf8JsonWriter writer, int? value, JsonSerializerOptions options) =>
+            writer.WriteNumberValue(value == null ? 0 : (int)value);
     }
 }
