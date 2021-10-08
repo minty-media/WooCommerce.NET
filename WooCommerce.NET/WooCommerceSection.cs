@@ -13,6 +13,7 @@ namespace WooCommerce.NET
             options.Converters.Add(new ProductStockStatusJsonConvertor());
             options.Converters.Add(new DecimalJsonConvertor());
             options.Converters.Add(new ProductTypeJsonConvertor());
+            options.Converters.Add(new IntegerJsonConvertor());
             options.WriteIndented = false;
             
             return options;
