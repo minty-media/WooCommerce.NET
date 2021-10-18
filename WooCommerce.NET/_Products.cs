@@ -50,6 +50,21 @@ namespace WooCommerce.NET
         }
         
         /// <summary>
+        /// Fetch a single product based on SKU
+        /// </summary>
+        /// <param name="productSku">Product SKU to search for</param>
+        /// <returns>A product object</returns>
+        public async Task<Product> Fetch(string productSku)
+        {
+            return (await MultiFetch(optionalParameters: new Dictionary<string, string>()
+            {
+                { "sku", productSku }
+            })).SingleOrDefault();
+        }
+        
+        
+        
+        /// <summary>
         /// Update a product, expects the product id in an empty product class with only the values that need changing.
         /// </summary>
         /// <param name="product">A product class with all values that need to be updated on WooCommercce</param>
