@@ -175,7 +175,7 @@ namespace WooCommerce.NET.Models
         public List<object> default_attributes { get; set; }
         
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public List<object> variations { get; set; }
+        public List<int> variations { get; set; }
         
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public List<object> grouped_products { get; set; }
