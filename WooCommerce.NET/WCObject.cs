@@ -2,7 +2,7 @@ using System.Net.Http;
 
 namespace WooCommerce.NET
 {
-    public class WooCommerce
+    public class WCObject
     {
         internal string host { get; set; }
         internal string key { get; set; }
@@ -10,7 +10,7 @@ namespace WooCommerce.NET
         
         public string userAgent { get; set; }
 
-        public WooCommerce(string host, string key, string secret)
+        public WCObject(string host, string key, string secret)
         {
             this.key = key;
             this.secret = secret;

@@ -13,11 +13,11 @@ namespace WooCommerce.NET
 {
     public class _Products : WooCommerceSection
     {
-        private WooCommerce _wooCommerce { get; set; }
+        private WCObject WcObject { get; set; }
 
-        public _Products(WooCommerce _wooCommerce)
+        public _Products(WCObject wcObject)
         {
-            this._wooCommerce = _wooCommerce;
+            this.WcObject = wcObject;
         }
         
         /// <summary>
@@ -27,11 +27,11 @@ namespace WooCommerce.NET
         /// <returns>A product object</returns>
         public async Task<Product> Fetch(long productId)
         {
-            HttpClient client = _wooCommerce.PrepareHttpClient();
+            HttpClient client = WcObject.PrepareHttpClient();
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri($"{_wooCommerce.host}/wp-json/wc/v3/products/{productId}?consumer_key={_wooCommerce.key}&consumer_secret={_wooCommerce.secret}"), 
+                RequestUri = new Uri($"{WcObject.host}/wp-json/wc/v3/products/{productId}?consumer_key={WcObject.key}&consumer_secret={WcObject.secret}"), 
                 Headers =
                 {
                     { "Accept", "application/json" },
@@ -56,11 +56,11 @@ namespace WooCommerce.NET
         /// <returns>Success true/false</returns>
         public async Task<bool> Update(Product product)
         {
-            HttpClient client = _wooCommerce.PrepareHttpClient();
+            HttpClient client = WcObject.PrepareHttpClient();
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Put,
-                RequestUri = new Uri($"{_wooCommerce.host}/wp-json/wc/v3/products/{product.id}?consumer_key={_wooCommerce.key}&consumer_secret={_wooCommerce.secret}"),
+                RequestUri = new Uri($"{WcObject.host}/wp-json/wc/v3/products/{product.id}?consumer_key={WcObject.key}&consumer_secret={WcObject.secret}"),
                 Content = new StringContent(JsonSerializer.Serialize(product, this.GetJsonSerializerOptions()))
                 {
                     Headers =
@@ -101,7 +101,7 @@ namespace WooCommerce.NET
             if (optionalParameters != null)
                 optionalParams = string.Join("&", optionalParameters.Select(x => x.Key + "=" + x.Value).ToArray());
 
-            string url = $"{_wooCommerce.host}/wp-json/wc/v3/products?consumer_key={_wooCommerce.key}&consumer_secret={_wooCommerce.secret}&{optionalParams}";
+            string url = $"{WcObject.host}/wp-json/wc/v3/products?consumer_key={WcObject.key}&consumer_secret={WcObject.secret}&{optionalParams}";
 
             url += $"&per_page={perPage}";
             
@@ -113,7 +113,7 @@ namespace WooCommerce.NET
             
             url += $"&order={SortDirectionMapper.GetValue(order)}";
 
-            HttpClient client = _wooCommerce.PrepareHttpClient();
+            HttpClient client = WcObject.PrepareHttpClient();
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
@@ -147,11 +147,11 @@ namespace WooCommerce.NET
         /// <returns>Success true/false</returns>
         public async Task<bool> Delete(long productId, long reassign = 0)
         {
-            HttpClient client = _wooCommerce.PrepareHttpClient();
+            HttpClient client = WcObject.PrepareHttpClient();
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Delete,
-                RequestUri = new Uri($"{_wooCommerce.host}/wp-json/wc/v3/products/{productId}?consumer_key={_wooCommerce.key}&consumer_secret={_wooCommerce.secret}&force=true" + (reassign != 0 ? $"&reassign={reassign}" : "")), 
+                RequestUri = new Uri($"{WcObject.host}/wp-json/wc/v3/products/{productId}?consumer_key={WcObject.key}&consumer_secret={WcObject.secret}&force=true" + (reassign != 0 ? $"&reassign={reassign}" : "")), 
             };
             
             using var response = await client.SendAsync(request);
@@ -165,11 +165,11 @@ namespace WooCommerce.NET
         /// <returns>Returns the actual product that's added to WooCommerce</returns>
         public async Task<Product> Create(Product product)
         {
-            HttpClient client = _wooCommerce.PrepareHttpClient();
+            HttpClient client = WcObject.PrepareHttpClient();
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Post,
-                RequestUri = new Uri($"{_wooCommerce.host}/wp-json/wc/v3/products?consumer_key={_wooCommerce.key}&consumer_secret={_wooCommerce.secret}"),
+                RequestUri = new Uri($"{WcObject.host}/wp-json/wc/v3/products?consumer_key={WcObject.key}&consumer_secret={WcObject.secret}"),
                 Content = new StringContent(JsonSerializer.Serialize(product, this.GetJsonSerializerOptions()))
                 {
                     Headers =

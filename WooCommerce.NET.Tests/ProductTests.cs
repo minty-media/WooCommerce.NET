@@ -8,16 +8,16 @@ namespace WooCommerce.NET.Tests
 {
     public class ProductTests
     {
-        private WooCommerce _wooCommerce;
+        private WCObject _wcObject;
         
         [SetUp]
         public void Setup()
         {
-            _wooCommerce = new WooCommerce(Environment.GetEnvironmentVariable("WOO_HOST"), 
+            _wcObject = new WCObject(Environment.GetEnvironmentVariable("WOO_HOST"), 
                 Environment.GetEnvironmentVariable("WOO_KEY"), 
                 Environment.GetEnvironmentVariable("WOO_SECRET"));
 
-            _wooCommerce.userAgent = "WooCommerce.NET/1.0.0 (linux; ubuntu20.04)";
+            _wcObject.userAgent = "WooCommerce.NET/1.0.0 (linux; ubuntu20.04)";
         }
         
         
@@ -29,10 +29,10 @@ namespace WooCommerce.NET.Tests
             for (int i = 0; i <= 5; i++)
                 products.Add(await PlaceDummyProduct(rnd));
             
-            List<Product> productsFetched = await _wooCommerce.Products.MultiFetch();
+            List<Product> productsFetched = await _wcObject.Products.MultiFetch();
             
             foreach (Product c in products)
-                Assert.IsTrue(await _wooCommerce.Products.Delete(c.id));
+                Assert.IsTrue(await _wcObject.Products.Delete(c.id));
             
             Assert.IsTrue(productsFetched.Count >= 5);
         }
@@ -45,11 +45,11 @@ namespace WooCommerce.NET.Tests
             Assert.IsNotNull(product);
 
             // Try fetching the product
-            Product c = await _wooCommerce.Products.Fetch(product.id);
+            Product c = await _wcObject.Products.Fetch(product.id);
             Assert.IsNotNull(c);
             
             // Clean up our shit and delete the used product
-            bool success = await _wooCommerce.Products.Delete(product.id);
+            bool success = await _wcObject.Products.Delete(product.id);
             Assert.IsTrue(success);
         }
         
@@ -60,7 +60,7 @@ namespace WooCommerce.NET.Tests
             Assert.IsNotNull(product);
             
             // Try delete an product
-            bool success = await _wooCommerce.Products.Delete(product.id);
+            bool success = await _wcObject.Products.Delete(product.id);
             Assert.IsTrue(success);
         }
         
@@ -70,19 +70,19 @@ namespace WooCommerce.NET.Tests
             Product product = await PlaceDummyProduct(new Random());
             Assert.IsNotNull(product);
 
-            Assert.IsTrue(await _wooCommerce.Products.Update(new Product()
+            Assert.IsTrue(await _wcObject.Products.Update(new Product()
             {
                 id = product.id,
                 name = "Updated product name",
                 stock_quantity = 70
             }));
-            Product c = await _wooCommerce.Products.Fetch(product.id);
+            Product c = await _wcObject.Products.Fetch(product.id);
 
             Assert.AreEqual(c.name, "Updated product name");
             Assert.AreEqual(c.stock_quantity, 70);
             
             // Try delete an product
-            bool success = await _wooCommerce.Products.Delete(c.id);
+            bool success = await _wcObject.Products.Delete(c.id);
             Assert.IsTrue(success);
         }
 
@@ -93,14 +93,14 @@ namespace WooCommerce.NET.Tests
             Product product = await PlaceDummyProduct(new Random());
             
             // Try delete an product
-            bool success = await _wooCommerce.Products.Delete(product.id);
+            bool success = await _wcObject.Products.Delete(product.id);
             Assert.IsTrue(success);
         }
 
         public async Task<Product> PlaceDummyProduct(Random rnd)
         {
             string sku = rnd.Next(0, 100000000).ToString();
-            return await _wooCommerce.Products.Create(new Product()
+            return await _wcObject.Products.Create(new Product()
             {
                 sku = sku,
                 name = $"Test product {sku}",

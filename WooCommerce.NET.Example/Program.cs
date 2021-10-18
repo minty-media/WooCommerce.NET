@@ -10,13 +10,13 @@ namespace WooCommerce.NET.Example
     {
         static async Task Main(string[] args)
         {
-            WooCommerce _wooCommerce = new WooCommerce(Environment.GetEnvironmentVariable("WOO_HOST"), 
+            WCObject _wcObject = new WCObject(Environment.GetEnvironmentVariable("WOO_HOST"), 
                     Environment.GetEnvironmentVariable("WOO_KEY"), 
                     Environment.GetEnvironmentVariable("WOO_SECRET"));
 
-            _wooCommerce.userAgent = "WooCommerce.NET/1.0.0 (linux; ubuntu20.04)";
+            _wcObject.userAgent = "WooCommerce.NET/1.0.0 (linux; ubuntu20.04)";
 
-            Order order = await _wooCommerce.Orders.Create(new Order()
+            Order order = await _wcObject.Orders.Create(new Order()
             {
                 billing = new BillingShippingInfo()
                 {

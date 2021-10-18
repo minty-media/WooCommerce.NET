@@ -8,16 +8,16 @@ namespace WooCommerce.NET.Tests
 {
     public class CustomerTests
     {
-        private WooCommerce _wooCommerce;
+        private WCObject _wcObject;
         
         [SetUp]
         public void Setup()
         {
-            _wooCommerce = new WooCommerce(Environment.GetEnvironmentVariable("WOO_HOST"), 
+            _wcObject = new WCObject(Environment.GetEnvironmentVariable("WOO_HOST"), 
                 Environment.GetEnvironmentVariable("WOO_KEY"), 
                 Environment.GetEnvironmentVariable("WOO_SECRET"));
 
-            _wooCommerce.userAgent = "WooCommerce.NET/1.0.0 (linux; ubuntu20.04)";
+            _wcObject.userAgent = "WooCommerce.NET/1.0.0 (linux; ubuntu20.04)";
         }
         
         
@@ -29,10 +29,10 @@ namespace WooCommerce.NET.Tests
             for (int i = 0; i <= 5; i++)
                 customers.Add(await PlaceDummyCustomer(rnd));
             
-            List<Customer> customersFetched = await _wooCommerce.Customers.MultiFetch(role: CustomerRole.All);
+            List<Customer> customersFetched = await _wcObject.Customers.MultiFetch(role: CustomerRole.All);
             
             foreach (Customer c in customers)
-                Assert.IsTrue(await _wooCommerce.Customers.Delete(c.id));
+                Assert.IsTrue(await _wcObject.Customers.Delete(c.id));
             
             Assert.IsTrue(customersFetched.Count >= 5);
         }
@@ -45,11 +45,11 @@ namespace WooCommerce.NET.Tests
             Assert.IsNotNull(customer);
 
             // Try fetching the customer
-            Customer c = await _wooCommerce.Customers.Fetch(customer.id);
+            Customer c = await _wcObject.Customers.Fetch(customer.id);
             Assert.IsNotNull(c);
             
             // Clean up our shit and delete the used customer
-            bool success = await _wooCommerce.Customers.Delete(customer.id);
+            bool success = await _wcObject.Customers.Delete(customer.id);
             Assert.IsTrue(success);
         }
         
@@ -60,7 +60,7 @@ namespace WooCommerce.NET.Tests
             Assert.IsNotNull(customer);
             
             // Try delete an customer
-            bool success = await _wooCommerce.Customers.Delete(customer.id);
+            bool success = await _wcObject.Customers.Delete(customer.id);
             Assert.IsTrue(success);
         }
         
@@ -70,7 +70,7 @@ namespace WooCommerce.NET.Tests
             Customer customer = await PlaceDummyCustomer(new Random());
             Assert.IsNotNull(customer);
 
-            Assert.IsTrue(await _wooCommerce.Customers.Update(new Customer()
+            Assert.IsTrue(await _wcObject.Customers.Update(new Customer()
             {
                 id = customer.id,
                 first_name = "Updated first_name",
@@ -80,14 +80,14 @@ namespace WooCommerce.NET.Tests
                     city = "Updated city"
                 }
             }));
-            Customer c = await _wooCommerce.Customers.Fetch(customer.id);
+            Customer c = await _wcObject.Customers.Fetch(customer.id);
 
             Assert.AreEqual(c.first_name, "Updated first_name");
             Assert.AreEqual(c.last_name, "Updated last_name");
             Assert.AreEqual(c.billing.city, "Updated city");
             
             // Try delete an customer
-            bool success = await _wooCommerce.Customers.Delete(c.id);
+            bool success = await _wcObject.Customers.Delete(c.id);
             Assert.IsTrue(success);
         }
 
@@ -98,13 +98,13 @@ namespace WooCommerce.NET.Tests
             Customer customer = await PlaceDummyCustomer(new Random());
             
             // Try delete an customer
-            bool success = await _wooCommerce.Customers.Delete(customer.id);
+            bool success = await _wcObject.Customers.Delete(customer.id);
             Assert.IsTrue(success);
         }
 
         public async Task<Customer> PlaceDummyCustomer(Random rnd)
         {
-            return await _wooCommerce.Customers.Create(new Customer()
+            return await _wcObject.Customers.Create(new Customer()
             {
                 first_name = "John",
                 last_name = "Dapper",

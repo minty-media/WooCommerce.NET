@@ -9,16 +9,16 @@ namespace WooCommerce.NET.Tests
 {
     public class OrderTests
     {
-        private WooCommerce _wooCommerce;
+        private WCObject _wcObject;
         
         [SetUp]
         public void Setup()
         {
-            _wooCommerce = new WooCommerce(Environment.GetEnvironmentVariable("WOO_HOST"), 
+            _wcObject = new WCObject(Environment.GetEnvironmentVariable("WOO_HOST"), 
                 Environment.GetEnvironmentVariable("WOO_KEY"), 
                 Environment.GetEnvironmentVariable("WOO_SECRET"));
 
-            _wooCommerce.userAgent = "WooCommerce.NET/1.0.0 (linux; ubuntu20.04)";
+            _wcObject.userAgent = "WooCommerce.NET/1.0.0 (linux; ubuntu20.04)";
         }
 
         [Test]
@@ -27,7 +27,7 @@ namespace WooCommerce.NET.Tests
             //Place an order to try update
             Order order = await PlaceDummyOrder();
 
-            Assert.IsTrue(await _wooCommerce.Orders.Update(new Order()
+            Assert.IsTrue(await _wcObject.Orders.Update(new Order()
             {
                 id = order.id,
                 set_paid = true,
@@ -35,11 +35,11 @@ namespace WooCommerce.NET.Tests
             }));
             
             // Try fetching the order
-            Order o = await _wooCommerce.Orders.Fetch(order.id);
+            Order o = await _wcObject.Orders.Fetch(order.id);
             Assert.AreEqual(o.status, "bol");
             
             // Clean up our shit and delete the used order
-            bool success = await _wooCommerce.Orders.Delete(order.id, true);
+            bool success = await _wcObject.Orders.Delete(order.id, true);
             Assert.IsTrue(success);
         }
 
@@ -57,10 +57,10 @@ namespace WooCommerce.NET.Tests
             for (int i = 0; i <= 5; i++)
                 orders.Add(await PlaceDummyOrder());
             
-            Assert.IsTrue((await _wooCommerce.Orders.MultiFetch()).Count >= 5);
+            Assert.IsTrue((await _wcObject.Orders.MultiFetch()).Count >= 5);
 
             foreach (Order o in orders)
-                Assert.IsTrue(await _wooCommerce.Orders.Delete(o.id, true));
+                Assert.IsTrue(await _wcObject.Orders.Delete(o.id, true));
         }
         
         [Test]
@@ -70,10 +70,10 @@ namespace WooCommerce.NET.Tests
             Order order = await PlaceDummyOrder();
             
             // Try fetching the order
-            Order o = await _wooCommerce.Orders.Fetch(order.id);
+            Order o = await _wcObject.Orders.Fetch(order.id);
             
             // Clean up our shit and delete the used order
-            bool success = await _wooCommerce.Orders.Delete(order.id, true);
+            bool success = await _wcObject.Orders.Delete(order.id, true);
             Assert.IsTrue(success);
             
             Assert.IsNotNull(o);
@@ -86,7 +86,7 @@ namespace WooCommerce.NET.Tests
             Order order = await PlaceDummyOrder();
             
             // Try delete an order
-            bool success = await _wooCommerce.Orders.Delete(order.id, true);
+            bool success = await _wcObject.Orders.Delete(order.id, true);
             Assert.IsTrue(success);
         }
         
@@ -95,16 +95,16 @@ namespace WooCommerce.NET.Tests
         {
             //Place an order to try fetch
             Order order = await PlaceDummyOrder();
-            Assert.IsNotEmpty(await _wooCommerce.Orders.MetaSearch("_bol_orderId", "4234546"));
+            Assert.IsNotEmpty(await _wcObject.Orders.MetaSearch("_bol_orderId", "4234546"));
             
             // Clean up our shit and delete the used order
-            bool success = await _wooCommerce.Orders.Delete(order.id, true);
+            bool success = await _wcObject.Orders.Delete(order.id, true);
             Assert.IsTrue(success);
         }
 
         private async Task<Order> PlaceDummyOrder()
         {
-            return await _wooCommerce.Orders.Create(new Order()
+            return await _wcObject.Orders.Create(new Order()
             {
                 status = "processing",
                 billing = new BillingShippingInfo()

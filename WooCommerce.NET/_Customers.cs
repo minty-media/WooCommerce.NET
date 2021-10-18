@@ -11,11 +11,11 @@ namespace WooCommerce.NET
 {
     public class _Customers : WooCommerceSection
     {
-        private WooCommerce _wooCommerce { get; set; }
+        private WCObject WcObject { get; set; }
 
-        public _Customers(WooCommerce _wooCommerce)
+        public _Customers(WCObject wcObject)
         {
-            this._wooCommerce = _wooCommerce;
+            this.WcObject = wcObject;
         }
         
         /// <summary>
@@ -25,11 +25,11 @@ namespace WooCommerce.NET
         /// <returns>A customer object</returns>
         public async Task<Customer> Fetch(long customerId)
         {
-            HttpClient client = _wooCommerce.PrepareHttpClient();
+            HttpClient client = WcObject.PrepareHttpClient();
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri($"{_wooCommerce.host}/wp-json/wc/v3/customers/{customerId}?consumer_key={_wooCommerce.key}&consumer_secret={_wooCommerce.secret}"), 
+                RequestUri = new Uri($"{WcObject.host}/wp-json/wc/v3/customers/{customerId}?consumer_key={WcObject.key}&consumer_secret={WcObject.secret}"), 
                 Headers =
                 {
                     { "Accept", "application/json" },
@@ -54,11 +54,11 @@ namespace WooCommerce.NET
         /// <returns>Success true/false</returns>
         public async Task<bool> Update(Customer customer)
         {
-            HttpClient client = _wooCommerce.PrepareHttpClient();
+            HttpClient client = WcObject.PrepareHttpClient();
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Put,
-                RequestUri = new Uri($"{_wooCommerce.host}/wp-json/wc/v3/customers/{customer.id}?consumer_key={_wooCommerce.key}&consumer_secret={_wooCommerce.secret}"),
+                RequestUri = new Uri($"{WcObject.host}/wp-json/wc/v3/customers/{customer.id}?consumer_key={WcObject.key}&consumer_secret={WcObject.secret}"),
                 Content = new StringContent(JsonSerializer.Serialize(customer, new JsonSerializerOptions(){ WriteIndented = false }))
                 {
                     Headers =
@@ -104,7 +104,7 @@ namespace WooCommerce.NET
             if (optionalParameters != null)
                 optionalParams = string.Join("&", optionalParameters.Select(x => x.Key + "=" + x.Value).ToArray());
 
-            string url = $"{_wooCommerce.host}/wp-json/wc/v3/customers?consumer_key={_wooCommerce.key}&consumer_secret={_wooCommerce.secret}&{optionalParams}";
+            string url = $"{WcObject.host}/wp-json/wc/v3/customers?consumer_key={WcObject.key}&consumer_secret={WcObject.secret}&{optionalParams}";
 
             url += $"&per_page={perPage}";
             
@@ -120,7 +120,7 @@ namespace WooCommerce.NET
             url += $"&order={SortDirectionMapper.GetValue(order)}";
             url += $"&role={CustomerRoleMapper.GetValue(role)}";
 
-            HttpClient client = _wooCommerce.PrepareHttpClient();
+            HttpClient client = WcObject.PrepareHttpClient();
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
@@ -154,11 +154,11 @@ namespace WooCommerce.NET
         /// <returns>Success true/false</returns>
         public async Task<bool> Delete(long customerId, long reassign = 0)
         {
-            HttpClient client = _wooCommerce.PrepareHttpClient();
+            HttpClient client = WcObject.PrepareHttpClient();
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Delete,
-                RequestUri = new Uri($"{_wooCommerce.host}/wp-json/wc/v3/customers/{customerId}?consumer_key={_wooCommerce.key}&consumer_secret={_wooCommerce.secret}&force=true" + (reassign != 0 ? $"&reassign={reassign}" : "")), 
+                RequestUri = new Uri($"{WcObject.host}/wp-json/wc/v3/customers/{customerId}?consumer_key={WcObject.key}&consumer_secret={WcObject.secret}&force=true" + (reassign != 0 ? $"&reassign={reassign}" : "")), 
             };
             
             using var response = await client.SendAsync(request);
@@ -172,11 +172,11 @@ namespace WooCommerce.NET
         /// <returns>Returns the actual customer that's added to WooCommerce</returns>
         public async Task<Customer> Create(Customer customer)
         {
-            HttpClient client = _wooCommerce.PrepareHttpClient();
+            HttpClient client = WcObject.PrepareHttpClient();
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Post,
-                RequestUri = new Uri($"{_wooCommerce.host}/wp-json/wc/v3/customers?consumer_key={_wooCommerce.key}&consumer_secret={_wooCommerce.secret}"),
+                RequestUri = new Uri($"{WcObject.host}/wp-json/wc/v3/customers?consumer_key={WcObject.key}&consumer_secret={WcObject.secret}"),
                 Content = new StringContent(JsonSerializer.Serialize(customer, new JsonSerializerOptions(){ WriteIndented = false }))
                 {
                     Headers =
