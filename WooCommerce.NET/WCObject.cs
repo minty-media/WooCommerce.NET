@@ -19,6 +19,7 @@ namespace WooCommerce.NET
             Orders = new _Orders(this);
             Products = new _Products(this);
             Customers = new _Customers(this);
+            Variations = new _Variations(this);
         }
 
         public HttpClient PrepareHttpClient()
@@ -31,8 +32,9 @@ namespace WooCommerce.NET
             return client;
         }
         
-        public _Orders Orders;
-        public _Products Products;
-        public _Customers Customers;
+        public readonly _Orders Orders;
+        public readonly _Products Products;
+        public readonly _Customers Customers;
+        public readonly _Variations Variations;
     }
 }

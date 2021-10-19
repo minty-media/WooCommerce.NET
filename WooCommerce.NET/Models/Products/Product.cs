@@ -28,7 +28,7 @@ namespace WooCommerce.NET.Models
         public ProductType type { get; set; }
         
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public string status { get; set; }
+        public ProductStatus status { get; set; }
         
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public bool featured { get; set; }
@@ -169,14 +169,14 @@ namespace WooCommerce.NET.Models
         public List<Image> images { get; set; }
         
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public List<object> attributes { get; set; }
+        public List<Attribute> attributes { get; set; }
         
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public List<object> default_attributes { get; set; }
         
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public List<int> variations { get; set; }
-        
+
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public List<object> grouped_products { get; set; }
         
