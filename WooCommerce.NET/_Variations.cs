@@ -44,7 +44,12 @@ namespace WooCommerce.NET
             using (var response = await client.SendAsync(request))
             {
                 if (response.IsSuccessStatusCode)
-                    return JsonSerializer.Deserialize<List<Variation>>(await response.Content.ReadAsStringAsync(), this.GetJsonSerializerOptions());
+                    return (JsonSerializer.Deserialize<List<Variation>>(await response.Content.ReadAsStringAsync(), this.GetJsonSerializerOptions()) ?? new List<Variation>()).Select(
+                        x =>
+                        {
+                            x.parent = parentId;
+                            return x;
+                        }).ToList();
                 
                 Console.WriteLine($"Failed fetching a products variations from WooCommerce:\n - Status code: {response.StatusCode}\n - Reason: {response.ReasonPhrase}\n - Response text: {await response.Content.ReadAsStringAsync()}");
             }
@@ -68,7 +73,16 @@ namespace WooCommerce.NET
             using (var response = await client.SendAsync(request))
             {
                 if (response.IsSuccessStatusCode)
-                    return JsonSerializer.Deserialize<Variation>(await response.Content.ReadAsStringAsync(), this.GetJsonSerializerOptions());
+                {
+                    Variation variation =
+                        JsonSerializer.Deserialize<Variation>(await response.Content.ReadAsStringAsync(),
+                            this.GetJsonSerializerOptions());
+
+                    if (variation != null)
+                        variation.parent = parentId;
+                    
+                    return variation;
+                }
                 
                 Console.WriteLine($"Failed fetching a products variations from WooCommerce:\n - Status code: {response.StatusCode}\n - Reason: {response.ReasonPhrase}\n - Response text: {await response.Content.ReadAsStringAsync()}");
             }

@@ -8,6 +8,9 @@ namespace WooCommerce.NET.Models
     {
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public int id { get; set; }
+        
+        [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
+        public int parent { get; internal set; }
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public DateTime date_created { get; set; }
