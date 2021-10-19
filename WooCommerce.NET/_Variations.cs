@@ -19,9 +19,12 @@ namespace WooCommerce.NET
         {
             this.WcObject = wcObject;
         }
-        
-        public async Task<List<Variation>> FetchAll(Product parent)
+
+        public async Task<List<Variation>> FetchAll(Product parent, bool forceFetch = false)
         {
+            if (forceFetch)
+                parent._variations = await FetchAll(parent.id);
+            
             return parent._variations ?? (parent._variations = await FetchAll(parent.id));
         }
         
