@@ -176,6 +176,9 @@ namespace WooCommerce.NET.Models
         
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public List<int> variations { get; set; }
+        
+        [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
+        internal List<Variation> _variations { get; set; }
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public List<object> grouped_products { get; set; }

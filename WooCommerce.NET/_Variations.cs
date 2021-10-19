@@ -20,6 +20,11 @@ namespace WooCommerce.NET
             this.WcObject = wcObject;
         }
         
+        public async Task<List<Variation>> FetchAll(Product parent)
+        {
+            return parent._variations ?? (parent._variations = await FetchAll(parent.id));
+        }
+        
         public async Task<List<Variation>> FetchAll(int parentId)
         {
             HttpClient client = WcObject.PrepareHttpClient();
