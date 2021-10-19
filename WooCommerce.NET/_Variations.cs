@@ -74,5 +74,26 @@ namespace WooCommerce.NET
             }
             return null;
         }
+
+        public async Task<bool> Update(Variation variation, int parentId)
+        {
+            
+            HttpClient client = WcObject.PrepareHttpClient();
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Put,
+                RequestUri = new Uri($"{WcObject.host}/wp-json/wc/v3/products/{parentId}/variations/{variation.id}?consumer_key={WcObject.key}&consumer_secret={WcObject.secret}"),
+                Content = new StringContent(JsonSerializer.Serialize(variation, this.GetJsonSerializerOptions()))
+                {
+                    Headers =
+                    {
+                        ContentType = new MediaTypeHeaderValue("application/json")
+                    }
+                }
+            };
+            
+            using var response = await client.SendAsync(request);
+            return response.IsSuccessStatusCode;         
+        }
     }
 }
