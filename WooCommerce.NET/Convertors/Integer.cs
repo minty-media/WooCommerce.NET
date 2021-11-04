@@ -11,7 +11,10 @@ namespace WooCommerce.NET.Convertors
         {
             if (reader.TokenType == JsonTokenType.Null)
                 return 0;
-            
+
+            if (reader.TokenType == JsonTokenType.String)
+                return 0;
+
             bool s = reader.TryGetInt32(out int value);
             return s ? value : 0;
         }
