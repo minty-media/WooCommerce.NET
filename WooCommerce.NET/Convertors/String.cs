@@ -12,7 +12,15 @@ namespace WooCommerce.NET.Convertors
             if (reader.TokenType == JsonTokenType.Null)
                 return "";
 
-            return reader.GetString();
+            try
+            {
+                String jsonString = reader.GetString();
+                return jsonString;
+            } catch (Exception e)
+            {
+                return "";
+            }
+
         }
 
         public override void Write(Utf8JsonWriter writer, string value, JsonSerializerOptions options) =>
