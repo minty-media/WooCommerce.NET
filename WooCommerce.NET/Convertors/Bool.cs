@@ -11,10 +11,10 @@ namespace WooCommerce.NET.Convertors
         {
             if (reader.TokenType == JsonTokenType.String)
                 return reader.GetString() == "true";
-            
+
             return reader.GetBoolean();
         }
-        
+
         public override void Write(Utf8JsonWriter writer, bool value, JsonSerializerOptions options) =>
             writer.WriteBooleanValue(value);
     }

@@ -36,6 +36,9 @@ namespace WooCommerce.NET.Models
         [JsonPropertyName("username"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public string username { get; set; }
 
+        [JsonPropertyName("password"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+        public string password { get; set; }
+
         [JsonPropertyName("billing"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public BillingShippingInfo billing { get; set; }
 

@@ -17,7 +17,7 @@ namespace WooCommerce.NET
         {
             this.WcObject = wcObject;
         }
-        
+
         /// <summary>
         /// Update an order, expects the order id in an empty order class with only the values that need changing.
         /// </summary>
@@ -38,11 +38,11 @@ namespace WooCommerce.NET
                     }
                 }
             };
-            
+
             using var response = await client.SendAsync(request);
             return response.IsSuccessStatusCode;
         }
-        
+
         /// <summary>
         /// Delete an order from WooCommerce
         /// </summary>
@@ -55,13 +55,13 @@ namespace WooCommerce.NET
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Delete,
-                RequestUri = new Uri($"{WcObject.host}/wp-json/wc/v3/orders/{orderId}?consumer_key={WcObject.key}&consumer_secret={WcObject.secret}&force={forceDelete}"), 
+                RequestUri = new Uri($"{WcObject.host}/wp-json/wc/v3/orders/{orderId}?consumer_key={WcObject.key}&consumer_secret={WcObject.secret}&force={forceDelete}"),
             };
-            
+
             using var response = await client.SendAsync(request);
             return response.IsSuccessStatusCode;
         }
-        
+
         /// <summary>
         /// Fetch multiple orders from woocommerce
         /// </summary>
@@ -74,20 +74,20 @@ namespace WooCommerce.NET
         /// <param name="optionalParameters">Any optional URL parameters</param>
         /// <returns>A list of orders. (Returns null if it fails to retrieve anything, returns empty array if there were no results)</returns>
         public async Task<List<Order>> MultiFetch(
+            Dictionary<string, string> optionalParameters,
             int page = 1,
             int offset = 0,
             int perPage = 10,
             OrderOrderBy orderBy = OrderOrderBy.Date,
             SortDirection order = SortDirection.Descending,
-            OrderStatus orderStatus = OrderStatus.Any,
-            Dictionary<string, string> optionalParameters = null)
+            OrderStatus orderStatus = OrderStatus.Any)
         {
             if (page < 1)
                 page = 1;
 
             if (perPage < 1)
                 perPage = 10;
-            
+
             string optionalParams = "";
 
             if (optionalParameters != null)
@@ -99,13 +99,13 @@ namespace WooCommerce.NET
                 url += $"&status={OrderStatusMapper.GetValue(orderStatus)}";
 
             url += $"&per_page={perPage}";
-            
+
             if (offset != 0)
                 url += $"&offset={offset}";
-            
+
             if (page != 1)
                 url += $"&page={page}";
-            
+
             url += $"&orderby={OrderOrderByMapper.GetValue(orderBy)}";
             url += $"&order={SortDirectionMapper.GetValue(order)}";
 
@@ -113,13 +113,13 @@ namespace WooCommerce.NET
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri(url), 
+                RequestUri = new Uri(url),
                 Headers =
                 {
                     { "Accept", "application/json" },
                 },
             };
-            
+
             using (var response = await client.SendAsync(request))
             {
                 if (response.IsSuccessStatusCode)
@@ -129,12 +129,12 @@ namespace WooCommerce.NET
 
                     return orders ?? new List<Order>();
                 }
-                
+
                 Console.WriteLine($"Failed fetching all orders from WooCommerce:\n - Status code: {response.StatusCode}\n - Reason: {response.ReasonPhrase}\n - Response text: {await response.Content.ReadAsStringAsync()}");
             }
             return null;
         }
-        
+
         /// <summary>
         /// Fetch order based on order id
         /// </summary>
@@ -146,24 +146,24 @@ namespace WooCommerce.NET
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri($"{WcObject.host}/wp-json/wc/v3/orders/{orderId}?consumer_key={WcObject.key}&consumer_secret={WcObject.secret}"), 
+                RequestUri = new Uri($"{WcObject.host}/wp-json/wc/v3/orders/{orderId}?consumer_key={WcObject.key}&consumer_secret={WcObject.secret}"),
                 Headers =
                 {
                     { "Accept", "application/json" },
                 },
             };
-            
+
             using (var response = await client.SendAsync(request))
             {
                 if (response.IsSuccessStatusCode)
                     return JsonSerializer.Deserialize<Order>(await response.Content.ReadAsStringAsync(), this.GetJsonSerializerOptions());
-                
+
                 Console.WriteLine($"Failed fetching an order from WooCommerce:\n - Status code: {response.StatusCode}\n - Reason: {response.ReasonPhrase}\n - Response text: {await response.Content.ReadAsStringAsync()}");
             }
 
             return null;
         }
-        
+
         /// <summary>
         /// Create new order on WooCommerce with supplied order object
         /// </summary>
@@ -195,7 +195,7 @@ namespace WooCommerce.NET
                     Console.WriteLine($"{o.id}");
                     return o;
                 }
-                
+
                 Console.WriteLine($"\nFailed creating order on WooCommerce:\n - Status code: {response.StatusCode}\n - Reason: {response.ReasonPhrase}\n - Response text: {await response.Content.ReadAsStringAsync()}");
                 Console.WriteLine(" - Input towards WooCommerce: " + JsonSerializer.Serialize(order, this.GetJsonSerializerOptions()));
             }
@@ -215,14 +215,15 @@ namespace WooCommerce.NET
             for (int i = 0; i < pages; i++)
             {
                 List<Order> os = await MultiFetch(
+                    null,
                     perPage: 100,
                     page: i + 1,
                     orderBy: OrderOrderBy.Date,
                     order: SortDirection.Descending,
                     orderStatus: OrderStatus.Any
                 );
-                
-                if (os !=null)
+
+                if (os != null)
                     orders.AddRange(os);
             }
             return orders.Count > 0 ? orders?.Where(x => x.meta_data.Any(y => y.key == metaKey && y.value.ToString() == metaValue)).ToList() : orders;

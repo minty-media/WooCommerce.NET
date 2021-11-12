@@ -9,12 +9,19 @@ namespace WooCommerce.NET.Convertors
     {
         public override decimal Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            if (reader.TokenType == JsonTokenType.Number)
+            if (reader.TokenType == JsonTokenType.String)
+            {
+                if (reader.GetString() == "" || reader.GetString() == null)
+                    return 0;
+
+                return string.IsNullOrEmpty(reader.GetString()) ? 0 : Convert.ToDecimal(reader.GetString().Replace(".", ","));
+            }
+            else if (reader.TokenType == JsonTokenType.Number)
                 return reader.GetDecimal();
             else
-                return string.IsNullOrEmpty(reader.GetString()) ? 0 : Convert.ToDecimal(reader.GetString());
+                return 0;
         }
-        
+
         public override void Write(Utf8JsonWriter writer, decimal value, JsonSerializerOptions options) =>
             writer.WriteStringValue(value.ToString(CultureInfo.InvariantCulture));
     }

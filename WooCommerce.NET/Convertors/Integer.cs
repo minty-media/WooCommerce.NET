@@ -18,7 +18,7 @@ namespace WooCommerce.NET.Convertors
             bool s = reader.TryGetInt32(out int value);
             return s ? value : 0;
         }
-        
+
         public override void Write(Utf8JsonWriter writer, Int32 value, JsonSerializerOptions options) =>
             writer.WriteNumberValue(value == null ? 0 : value);
     }
