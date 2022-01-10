@@ -74,9 +74,7 @@ namespace WooCommerce.NET
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    Variation variation =
-                        JsonSerializer.Deserialize<Variation>(await response.Content.ReadAsStringAsync(),
-                            this.GetJsonSerializerOptions());
+                    Variation variation = JsonSerializer.Deserialize<Variation>(await response.Content.ReadAsStringAsync(), this.GetJsonSerializerOptions());
 
                     if (variation != null)
                         variation.parent = parentId;

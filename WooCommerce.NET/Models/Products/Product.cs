@@ -27,7 +27,7 @@ namespace WooCommerce.NET.Models
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public ProductType type { get; set; }
         
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+
         public ProductStatus status { get; set; }
         
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]

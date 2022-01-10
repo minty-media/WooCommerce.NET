@@ -16,7 +16,7 @@ namespace WooCommerce.NET.Convertors
             {
                 String jsonString = reader.GetString();
                 return jsonString;
-            } catch (Exception e)
+            } catch
             {
                 return "";
             }
