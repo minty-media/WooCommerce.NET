@@ -14,15 +14,10 @@ namespace WooCommerce.NET.Convertors
                 if (reader.GetString() == "" || reader.GetString() == null)
                     return 0;
 
-                Console.WriteLine("string format: " + reader.GetString());
-                Console.WriteLine("convert to decimal: " + Convert.ToDecimal(reader.GetString()));
-                Console.WriteLine("convert to decimal with replace: " + Convert.ToDecimal(reader.GetString().Replace(".", ",")));
-
-                return string.IsNullOrEmpty(reader.GetString()) ? 0 : Convert.ToDecimal(reader.GetString().Replace(".", ","));
+                return string.IsNullOrEmpty(reader.GetString()) ? 0 : Convert.ToDecimal(reader.GetString());
             }
             else if (reader.TokenType == JsonTokenType.Number)
             {
-                Console.WriteLine("get decimal: "+ reader.GetDecimal());
                 return reader.GetDecimal();
             }
             else
