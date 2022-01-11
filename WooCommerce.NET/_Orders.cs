@@ -126,11 +126,6 @@ namespace WooCommerce.NET
                 {
                     List<Order> orders = JsonSerializer.Deserialize<List<Order>>(await response.Content.ReadAsStringAsync(), this.GetJsonSerializerOptions());
 
-                    foreach(Order o in orders)
-                    {
-                        Console.WriteLine(o.total);
-                    }
-
                     return orders ?? new List<Order>();
                 }
 
