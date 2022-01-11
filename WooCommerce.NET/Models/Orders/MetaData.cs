@@ -6,10 +6,10 @@ namespace WooCommerce.NET
     {
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public long id { get; set; }
-        
+
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public string key { get; set; }
-        
+
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public object value { get; set; }
     }

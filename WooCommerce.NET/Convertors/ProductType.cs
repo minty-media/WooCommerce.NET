@@ -26,7 +26,7 @@ namespace WooCommerce.NET.Convertors
                     return ProductType.Simple;
             }
         }
-        
+
         public override void Write(Utf8JsonWriter writer, ProductType value, JsonSerializerOptions options) =>
             writer.WriteStringValue(ProductTypeMapper.GetValue(value));
     }

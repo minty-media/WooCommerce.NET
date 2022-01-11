@@ -24,7 +24,7 @@ namespace WooCommerce.NET.Convertors
                     return ProductStockStatus.OutOfStock;
             }
         }
-        
+
         public override void Write(Utf8JsonWriter writer, ProductStockStatus value, JsonSerializerOptions options) =>
             writer.WriteStringValue(ProductStockStatusMapper.GetValue(value));
     }

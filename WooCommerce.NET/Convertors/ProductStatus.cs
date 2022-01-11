@@ -26,7 +26,7 @@ namespace WooCommerce.NET.Convertors
                     return ProductStatus.Draft;
             }
         }
-        
+
         public override void Write(Utf8JsonWriter writer, ProductStatus value, JsonSerializerOptions options) =>
             writer.WriteStringValue(ProductStatusMapper.GetValue(value));
     }

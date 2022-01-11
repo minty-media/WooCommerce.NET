@@ -16,15 +16,15 @@ namespace WooCommerce.NET.Models
         [JsonPropertyName("option")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public string Option { get; set; }
-        
+
         [JsonPropertyName("options")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public List<string> Options { get; set; }
-        
+
         [JsonPropertyName("visible")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public bool Visible { get; set; }
-        
+
         [JsonPropertyName("variation")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public bool Variation { get; set; }
