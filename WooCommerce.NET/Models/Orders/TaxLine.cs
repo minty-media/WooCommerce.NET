@@ -27,7 +27,7 @@ namespace WooCommerce.NET
         public string shipping_tax_total { get; set; }
         
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public long rate_percent { get; set; }
+        public decimal rate_percent { get; set; }
         
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public List<MetaData> meta_data { get; set; }
