@@ -71,6 +71,8 @@ namespace WooCommerce.NET
         /// <returns>Success true/false</returns>
         public async Task<bool> Update(Product product)
         {
+            Console.WriteLine(JsonSerializer.Serialize(product, this.GetJsonSerializerOptions()));
+
             HttpClient client = WcObject.PrepareHttpClient();
             var request = new HttpRequestMessage
             {
