@@ -52,11 +52,11 @@ namespace WooCommerce.NET.Models
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public decimal sale_price { get; set; }
         
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public string date_on_sale_from { get; set; }
+        //[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+        //public string date_on_sale_from { get; set; }
         
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public string date_on_sale_to { get; set; }
+        //[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+        //public string date_on_sale_to { get; set; }
         
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public string price_html { get; set; }
